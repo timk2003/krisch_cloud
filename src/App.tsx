@@ -15,15 +15,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 // Geschützte Route-Komponente
 function ProtectedRoute({ children, requireAdmin = false }: { children: React.ReactNode, requireAdmin?: boolean }) {
-  const { user, isAdmin, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
+  const { user, isAdmin } = useAuth();
 
   if (!user) {
     return <Navigate to="/login" replace />;
@@ -38,15 +30,7 @@ function ProtectedRoute({ children, requireAdmin = false }: { children: React.Re
 
 // Public Route-Komponente
 function PublicRoute({ children }: { children: React.ReactNode }) {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
+  const { user } = useAuth();
 
   if (user) {
     return <Navigate to="/" replace />;
