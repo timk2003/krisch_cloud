@@ -8,9 +8,54 @@ import Todos from './pages/Todos';
 import Journal from './pages/Journal';
 import Dateien from './pages/Dateien';
 import Schulden from './pages/Schulden';
+import AdminDashboard from './pages/AdminDashboard';
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 
-function App() {
-  // Überprüfen, ob der User ein Farbschema bevorzugt
+// Geschützte Route-Komponente
+function ProtectedRoute({ children, requireAdmin = false }: { children: React.ReactNode, requireAdmin?: boolean }) {
+  const { user, isAdmin, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (requireAdmin && !isAdmin) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <>{children}</>;
+}
+
+// Public Route-Komponente
+function PublicRoute({ children }: { children: React.ReactNode }) {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <>{children}</>;
+}
+
+function AppRoutes() {
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('darkMode');
@@ -23,7 +68,6 @@ function App() {
   });
 
   useEffect(() => {
-    // Theme anwenden und speichern
     if (darkMode) {
       document.documentElement.classList.add('dark');
     } else {
@@ -33,19 +77,57 @@ function App() {
   }, [darkMode]);
 
   return (
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/login" element={
+        <PublicRoute>
+          <Login />
+        </PublicRoute>
+      } />
+      <Route path="/register" element={
+        <PublicRoute>
+          <Register />
+        </PublicRoute>
+      } />
+
+      {/* Protected Routes */}
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <MainLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Dashboard />} />
+        <Route path="fitness" element={<Fitness />} />
+        <Route path="schulung" element={<Schulung />} />
+        <Route path="todos" element={<Todos />} />
+        <Route path="journal" element={<Journal />} />
+        <Route path="dateien" element={<Dateien />} />
+        <Route path="schulden" element={<Schulden />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
+
+      {/* Admin Routes */}
+      <Route
+        path="/admin/*"
+        element={
+          <ProtectedRoute requireAdmin>
+            <AdminDashboard />
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
+  );
+}
+
+function App() {
+  return (
     <Router>
-      <Routes>
-        <Route path="/" element={<MainLayout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="fitness" element={<Fitness />} />
-          <Route path="schulung" element={<Schulung />} />
-          <Route path="todos" element={<Todos />} />
-          <Route path="journal" element={<Journal />} />
-          <Route path="dateien" element={<Dateien />} />
-          <Route path="schulden" element={<Schulden />} />
-          <Route path="*" element={<Navigate to="/\" replace />} />
-        </Route>
-      </Routes>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
     </Router>
   );
 }

@@ -56,6 +56,14 @@
 - **Styling**: TailwindCSS 3.4.1
 - **Icons**: Lucide React 0.344.0
 
+### Backend
+- **Datenbank & Auth**: Supabase
+  - PostgreSQL-Datenbank
+  - Authentifizierung
+  - Echtzeit-Updates
+  - Datei-Speicherung
+  - Row Level Security
+
 ### Entwicklung
 - **Linting**: ESLint 9.9.1
 - **TypeScript-Konfiguration**: tsconfig
@@ -78,6 +86,15 @@ npm run preview
 
 # Linting
 npm run lint
+```
+
+## 🔐 Umgebungsvariablen
+
+Erstelle eine `.env`-Datei im Root-Verzeichnis mit folgenden Variablen:
+
+```env
+VITE_SUPABASE_URL=deine_supabase_url
+VITE_SUPABASE_ANON_KEY=dein_supabase_anon_key
 ```
 
 ## 📌 Ziel von krisch.cloud
