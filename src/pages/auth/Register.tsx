@@ -1,14 +1,8 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-);
+import { Link } from 'react-router-dom';
+import { supabase } from '../../lib/supabase';
 
 export default function Register() {
-  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -21,58 +15,42 @@ export default function Register() {
     setError(null);
 
     if (password !== confirmPassword) {
-      setError('Passwörter stimmen nicht überein');
+      setError('Die Passwörter stimmen nicht überein');
       setLoading(false);
       return;
     }
 
     try {
-      // 1. Benutzer registrieren
-      const { data: authData, error: authError } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
       });
 
-      if (authError) throw authError;
+      if (error) throw error;
 
-      if (authData.user) {
-        // 2. Profil erstellen
+      if (data.user) {
+        // Erstelle ein Profil für den neuen Benutzer
         const { error: profileError } = await supabase
           .from('profiles')
           .insert([
             {
-              id: authData.user.id,
-              email: authData.user.email,
-              created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString(),
+              id: data.user.id,
+              email: data.user.email,
+              role: 'user',
             },
           ]);
 
-        if (profileError) {
-          // Wenn die Profilerstellung fehlschlägt, löschen wir den Benutzer
-          await supabase.auth.admin.deleteUser(authData.user.id);
-          throw profileError;
-        }
-
-        // 3. Automatisch einloggen
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
-        if (signInError) throw signInError;
-
-        navigate('/admin');
+        if (profileError) throw profileError;
       }
     } catch (error: any) {
-      setError(error.message);
+      setError(error.message || 'Ein Fehler ist aufgetreten');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
+    <div className="flex items-center justify-center min-h-screen bg-background">
       <div className="w-full max-w-md p-8 space-y-8 bg-card rounded-lg shadow-lg">
         <div>
           <h2 className="text-3xl font-bold text-center text-foreground">
@@ -130,7 +108,7 @@ export default function Register() {
             </div>
           </div>
 
-          <div>
+          <div className="space-y-4">
             <button
               type="submit"
               disabled={loading}
@@ -138,6 +116,15 @@ export default function Register() {
             >
               {loading ? 'Lädt...' : 'Registrieren'}
             </button>
+            
+            <div className="text-center">
+              <Link
+                to="/login"
+                className="text-sm text-primary hover:text-primary/90"
+              >
+                Bereits ein Konto? Anmelden
+              </Link>
+            </div>
           </div>
         </form>
       </div>

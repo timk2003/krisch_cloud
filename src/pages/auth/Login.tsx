@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function Login() {
@@ -16,14 +17,14 @@ export default function Login() {
     try {
       await signIn(email, password);
     } catch (error: any) {
-      setError(error.message);
+      setError(error.message || 'Ein Fehler ist aufgetreten');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
+    <div className="flex items-center justify-center min-h-screen bg-background">
       <div className="w-full max-w-md p-8 space-y-8 bg-card rounded-lg shadow-lg">
         <div>
           <h2 className="text-3xl font-bold text-center text-foreground">
@@ -67,7 +68,7 @@ export default function Login() {
             </div>
           </div>
 
-          <div>
+          <div className="space-y-4">
             <button
               type="submit"
               disabled={loading}
@@ -75,6 +76,15 @@ export default function Login() {
             >
               {loading ? 'Lädt...' : 'Anmelden'}
             </button>
+            
+            <div className="text-center">
+              <Link
+                to="/register"
+                className="text-sm text-primary hover:text-primary/90"
+              >
+                Noch kein Konto? Registrieren
+              </Link>
+            </div>
           </div>
         </form>
       </div>
