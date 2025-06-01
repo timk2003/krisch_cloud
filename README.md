@@ -9,7 +9,7 @@
 - Schulungs- und Fitness-Fortschritt (Progress-Ringe)
 - Letzte Datei-Uploads
 - Mini-ToDo für den Tag
-- Mood-Check (z. B. Emoji-Auswahl)
+- Mood-Check (z. B. Emoji-Auswahl)
 
 ### 💪 Fitness
 - Persönlicher Trainingsplan (Woche)
@@ -17,7 +17,7 @@
 - Supplement-Tracker
 
 ### 🎓 Schulung
-- Lernplan (z. B. für §34a, GSSK etc.)
+- Lernplan (z. B. für §34a, GSSK etc.)
 - Prüfungs-Countdown
 - Themenliste & Fortschritt
 
@@ -28,13 +28,13 @@
 
 ### 🎯 Monatsziele
 - Zielsetzung
-- Ziel-Fortschritt (z. B. 3 von 5 Zielen erreicht)
+- Ziel-Fortschritt (z. B. 3 von 5 Zielen erreicht)
 - Rückblick und Reflektion
 
 ### 📁 File Manager
 - Datei-Upload mit Vorschau
 - Letzte Uploads auf dem Dashboard sichtbar
-- Kategorisierung nach Ordnern (z. B. Schulung, Finanzen, Bewerbungen)
+- Kategorisierung nach Ordnern (z. B. Schulung, Finanzen, Bewerbungen)
 
 ### 💸 Schulden-Manager
 - Übersicht aller Gläubiger
@@ -44,25 +44,46 @@
 ### 🧠 Journal
 - Freitextfeld für Gedanken & Tagesreflexion
 - Mood-Tracker
-- „Worauf ich stolz bin“-Sektion
+- „Worauf ich stolz bin"-Sektion
 
----
+## 🛠️ Tech Stack
 
-## 🛠️ Tech Stack (optional)
+### Frontend
+- **Framework**: React 18.3.1
+- **Sprache**: TypeScript 5.5.3
+- **Build-Tool**: Vite 5.4.2
+- **Routing**: React Router 6.22.3
+- **Styling**: TailwindCSS 3.4.1
+- **Icons**: Lucide React 0.344.0
 
-- Frontend: [Bolt.dev](https://bolt.dev) oder v0.dev
-- Styling: TailwindCSS
-- Backend: Supabase (optional für File Manager & Datenbanken)
-- Hosting: krisch.cloud (z. B. via Vercel oder Netlify)
+### Entwicklung
+- **Linting**: ESLint 9.9.1
+- **TypeScript-Konfiguration**: tsconfig
+- **CSS-Tools**: PostCSS, Autoprefixer
 
----
+## 🚀 Entwicklung
+
+```bash
+# Installation der Abhängigkeiten
+npm install
+
+# Starten des Development-Servers
+npm run dev
+
+# Build für Produktion
+npm run build
+
+# Vorschau des Production-Builds
+npm run preview
+
+# Linting
+npm run lint
+```
 
 ## 📌 Ziel von krisch.cloud
 
 Eine zentrale Schaltzentrale für dein echtes Leben – kein Chaos mehr mit Zetteln, Apps und Screenshots.  
 **Hier ist alles vereint. Strukturiert. Übersichtlich. Auf dich zugeschnitten.**
-
----
 
 ## 📣 Kontakt
 
@@ -72,4 +93,4 @@ E-Mail: `timkrisch@outlook.com`
 
 ---
 
-> „Struktur ist der erste Schritt zur Freiheit.“  
+> „Struktur ist der erste Schritt zur Freiheit."
